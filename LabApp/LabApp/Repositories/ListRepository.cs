@@ -6,6 +6,9 @@ namespace LabApp.Repositories
     {
         private readonly List<T> _items = new();
 
+        public event EventHandler<T>? ItemAdded;
+        public event EventHandler<T>? ItemRemoved;
+
         public IEnumerable<T> GetAll()
         {
             return _items.ToList();
@@ -17,7 +20,7 @@ namespace LabApp.Repositories
             _items.Add(item);
         }
 
-        public T GetById(int id)
+        public T? GetById(int id)
         {
             return _items.Single(item => item.Id == id);
         }
@@ -29,7 +32,7 @@ namespace LabApp.Repositories
 
         public void Save()
         {
-            
+            Console.WriteLine("Dane zapisane do listy.");
         }
     }
 }
