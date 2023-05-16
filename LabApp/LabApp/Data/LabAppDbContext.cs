@@ -7,7 +7,7 @@ namespace LabApp.Data
     {
         public DbSet<Product> Products => Set<Product>();
 
-        public DbSet<Test> Tests => Set<Test>();
+        public DbSet<Product> Tests => Set<Product>();
 
         public DbSet<Client> Clients => Set<Client>();
 
