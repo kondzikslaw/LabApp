@@ -1,4 +1,4 @@
-﻿namespace LabApp
+﻿namespace LabApp.UI
 {
     public interface IUserCommunications
     {

@@ -3,15 +3,15 @@ using LabApp.Entities;
 using LabApp.Repositories;
 using System.Text.Json;
 
-namespace LabApp
+namespace LabApp.Components.Menu
 {
-    public class ClientMenu : Menu<Client>, IMenu<Client> 
+    public class ClientMenuList : Menu<Client>, IMenu<Client>
     {
         private readonly IRepository<Client> _clientRepository;
 
         private readonly IClientsProvider _clientsProvider;
 
-        public ClientMenu(IRepository<Client> clientRepository, IClientsProvider clientsProvider) : base(clientRepository)
+        public ClientMenuList(IRepository<Client> clientRepository, IClientsProvider clientsProvider) : base(clientRepository)
         {
             _clientRepository = clientRepository;
             _clientsProvider = clientsProvider;
@@ -19,7 +19,6 @@ namespace LabApp
 
         public new void MenuActions()
         {
-            GetClientsFromJsonFile();
             while (true)
             {
                 base.MenuActions();
@@ -46,7 +45,7 @@ namespace LabApp
                 }
                 else if (input == "4")
                 {
-                    FilterClientsMenu();
+                    FilterMenu();
                 }
                 else if (input == "B")
                 {
@@ -87,28 +86,10 @@ namespace LabApp
             SaveClientsToJsonFile();
         }
 
-        protected void GetClientsFromJsonFile()
-        {
-            var clients = new List<Client>();
-
-            var clientFile = File.ReadAllLines("clients.json");
-            if (clientFile.Length > 0)
-            {
-                foreach (var line in clientFile)
-                {
-                    Client client = JsonSerializer.Deserialize<Client>(line);
-                    clients.Add(client);
-                }
-            }
-            foreach (var client in clients)
-            {
-                _clientRepository.Add(client);
-            }
-        }
         protected void SaveClientsToJsonFile()
         {
             var clients = _clientRepository.GetAll();
-            File.WriteAllText("clients.json", String.Empty);
+            File.WriteAllText("clients.json", string.Empty);
             foreach (var client in clients)
             {
                 var json = JsonSerializer.Serialize(client);
@@ -120,7 +101,7 @@ namespace LabApp
             _clientRepository.Save();
         }
 
-        protected void FilterClientsMenu()
+        protected override void FilterMenu()
         {
             while (true)
             {

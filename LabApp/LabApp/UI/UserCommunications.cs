@@ -1,6 +1,7 @@
-﻿using LabApp.Entities;
+﻿using LabApp.Components.Menu;
+using LabApp.Entities;
 
-namespace LabApp
+namespace LabApp.UI
 {
     public class UserCommunications : IUserCommunications
     {
@@ -19,7 +20,7 @@ namespace LabApp
 
         public void ChooseRepositoryMenu()
         {
-            while(true)
+            while (true)
             {
                 Console.WriteLine("Welcome to Lab Management App. Please choose which resource would you like to work with:\n" +
                 "1 - Products\n" +
@@ -49,7 +50,7 @@ namespace LabApp
                 {
                     Console.WriteLine("Wrong input. Please try again.");
                 }
-            }    
+            }
         }
     }
 }

@@ -2,25 +2,23 @@
 using LabApp.Entities;
 using LabApp.Repositories;
 using System.Globalization;
-using System.Text.Json;
 
-namespace LabApp
+namespace LabApp.Components.Menu
 {
-    public class TestMenu : Menu<Test>, IMenu<Test>
+    public class TestMenuSql : Menu<Test>, IMenu<Test>
     {
         private readonly IRepository<Test> _testRepository;
 
-        private readonly ITestsProvider _testProvider;
-
-        public TestMenu(IRepository<Test> testRepository, ITestsProvider testsProvider) :base(testRepository)
+        private readonly ITestsProvider _testsProvider;
+        
+        public TestMenuSql(IRepository<Test> testRepository, ITestsProvider testsProvider) : base(testRepository)
         {
+            _testsProvider = testsProvider;
             _testRepository = testRepository;
-            _testProvider = testsProvider;
         }
-
+        
         public new void MenuActions()
         {
-            GetTestsFromJsonFile();            
             while (true)
             {
                 base.MenuActions();
@@ -47,7 +45,7 @@ namespace LabApp
                 }
                 else if (input == "4")
                 {
-                    FilterTestsMenu();
+                    FilterMenu();
                 }
                 else if (input == "B")
                 {
@@ -59,7 +57,7 @@ namespace LabApp
                 }
             }
         }
-
+        
         protected override void AddNewItem()
         {
             Console.WriteLine("Enter Test Name: ");
@@ -69,8 +67,8 @@ namespace LabApp
             Console.WriteLine("Enter Price: ");
             var price = decimal.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
 
-            _testRepository.Add(new Test { Id = GetLastId(), TestName = name, TestType = type, Price = price });
-            SaveTestsToJsonFile();
+            _testRepository.Add(new Test { TestName = name, TestType = type, Price = price });
+            _testRepository.Save();
         }
 
         protected override void RemoveItem()
@@ -81,49 +79,15 @@ namespace LabApp
             var test = _testRepository.GetById(input);
 
             _testRepository.Remove(test);
-            SaveTestsToJsonFile();
-        }
-
-        protected void GetTestsFromJsonFile()
-        {
-            var tests = new List<Test>();
-
-            var testFile = File.ReadAllLines("tests.json");
-            if (testFile.Length > 0)
-            {
-                foreach (var line in testFile)
-                {
-                    Test test = JsonSerializer.Deserialize<Test>(line);
-                    tests.Add(test);
-                }
-            }
-            foreach (var test in tests)
-            {
-                _testRepository.Add(test);
-            }
-        }
-
-        protected void SaveTestsToJsonFile()
-        {
-            var tests = _testRepository.GetAll();
-            File.WriteAllText("tests.json", String.Empty);
-            foreach (var test in tests)
-            {
-                var json = JsonSerializer.Serialize(test);
-                using (var writer = File.AppendText("tests.json"))
-                {
-                    writer.WriteLine(json);
-                }
-            }
             _testRepository.Save();
         }
-
-        protected void FilterTestsMenu()
+        
+        protected override void FilterMenu()
         {
             while (true)
             {
                 Console.WriteLine("Choose what filter you want to use:\n" +
-                "1 - Show test with the highest price\n" +
+                "1 - Show the highest price\n" +
                 "2 - Show test types\n" +
                 "B - Go back to previous menu.");
 
@@ -131,11 +95,11 @@ namespace LabApp
 
                 if (input == "1")
                 {
-                    _testProvider.GetMaximumTestPrice();
+                    _testsProvider.GetMaximumTestPrice();
                 }
                 else if (input == "2")
                 {
-                    _testProvider.GetUniqueTestTypes();
+                    _testsProvider.GetUniqueTestTypes();
                 }
                 else if (input == "B")
                 {
@@ -145,18 +109,6 @@ namespace LabApp
                 {
                     Console.WriteLine("Wrong input. Please try again.");
                 }
-            }
-        }
-
-        private int GetLastId()
-        {
-            if (_testRepository.GetAll().Count() == 0)
-            {
-                return 1;
-            }
-            else
-            {
-                return _testRepository.GetAll().Last().Id + 1;
             }
         }
     }

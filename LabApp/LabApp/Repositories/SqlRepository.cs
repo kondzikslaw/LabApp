@@ -1,4 +1,5 @@
-﻿using LabApp.Entities;
+﻿using LabApp.Data;
+using LabApp.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LabApp.Repositories
@@ -6,12 +7,12 @@ namespace LabApp.Repositories
     public class SqlRepository<T> :IRepository<T> where T : class, IEntity, new()
     {
         private readonly DbSet<T> _dbSet;
-        private readonly DbContext _dbContext;
+        private readonly LabAppDbContext _labAppDbContext;
 
-        public SqlRepository(DbContext dbContext)
+        public SqlRepository(LabAppDbContext labAppDbContext)
         {
-            _dbContext = dbContext;
-            _dbSet = _dbContext.Set<T>();
+            _labAppDbContext = labAppDbContext;
+            _dbSet = _labAppDbContext.Set<T>();
         }
 
         public event EventHandler<T>? ItemAdded;
@@ -24,7 +25,7 @@ namespace LabApp.Repositories
 
         public T? GetById(int id)
         {
-            return _dbSet.Find(id);
+            return _dbSet.SingleOrDefault(x => x.Id == id);
         }
 
         public void Add(T item)
@@ -41,7 +42,7 @@ namespace LabApp.Repositories
 
         public void Save()
         {
-            _dbContext.SaveChanges();
+            _labAppDbContext.SaveChanges();
         }
     }
 }

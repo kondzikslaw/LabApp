@@ -4,15 +4,15 @@ using LabApp.Repositories;
 using System.Globalization;
 using System.Text.Json;
 
-namespace LabApp
+namespace LabApp.Components.Menu
 {
-    public class ProductMenu : Menu<Product>, IMenu<Product>
+    public class ProductMenuList : Menu<Product>, IMenu<Product>
     {
         private readonly IRepository<Product> _productRepository;
 
         private readonly IProductsProvider _productsProvider;
 
-        public ProductMenu(IRepository<Product> productRepository, IProductsProvider productsProvider) : base(productRepository)
+        public ProductMenuList(IRepository<Product> productRepository, IProductsProvider productsProvider) : base(productRepository)
         {
             _productRepository = productRepository;
             _productsProvider = productsProvider;
@@ -20,7 +20,6 @@ namespace LabApp
 
         public new void MenuActions()
         {
-            GetProductsFromJsonFile();
             while (true)
             {
                 base.MenuActions();
@@ -47,7 +46,7 @@ namespace LabApp
                 }
                 else if (input == "4")
                 {
-                    FilterProductsMenu();
+                    FilterMenu();
                 }
                 else if (input == "B")
                 {
@@ -88,29 +87,10 @@ namespace LabApp
             SaveToJsonFile();
         }
 
-        protected void GetProductsFromJsonFile()
-        {
-            var products = new List<Product>();
-
-            var productFile = File.ReadAllLines("products.json");
-            if (productFile.Length > 0)
-            {
-                foreach (var line in productFile)
-                {
-                    Product product = JsonSerializer.Deserialize<Product>(line);
-                    products.Add(product);
-                }
-            }
-            foreach (var product in products)
-            {
-                _productRepository.Add(product);
-            }
-        }
-
         protected void SaveToJsonFile()
         {
             var products = _productRepository.GetAll();
-            File.WriteAllText("products.json", String.Empty);
+            File.WriteAllText("products.json", string.Empty);
             foreach (var product in products)
             {
                 var json = JsonSerializer.Serialize(product);
@@ -122,9 +102,9 @@ namespace LabApp
             _productRepository.Save();
         }
 
-        protected void FilterProductsMenu()
+        protected override void FilterMenu()
         {
-            while(true)
+            while (true)
             {
                 Console.WriteLine("Choose what filter you want to use:\n" +
                     "1 - Show First Product with chosen container\n" +

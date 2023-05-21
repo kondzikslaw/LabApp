@@ -1,20 +1,28 @@
-﻿using LabApp.Entities;
+﻿using LabApp.DataProviders;
+using LabApp.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LabApp.Data
 {
     public class LabAppDbContext : DbContext
     {
-        public DbSet<Product> Products => Set<Product>();
+        public LabAppDbContext(DbContextOptions<LabAppDbContext> options)
+            : base(options)
+        {
 
-        public DbSet<Product> Tests => Set<Product>();
+        }
 
-        public DbSet<Client> Clients => Set<Client>();
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<Test> Tests { get; set; }
+
+        public DbSet<Client> Clients { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseInMemoryDatabase("StorageAppDb");
+            optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial Catalog=LabAppStorage;Integrated Security=True;Trust Server Certificate=True");
         }
+
     }
 }

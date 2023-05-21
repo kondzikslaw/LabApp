@@ -15,7 +15,7 @@ namespace LabApp.DataProviders
         {
             var tests = _testRepository.GetAll();
             var maxPriceTest = tests.Select(x => x.Price).Max();
-            Console.WriteLine($"{maxPriceTest:N2}zł");
+            Console.WriteLine(maxPriceTest);
         }
 
         public void GetUniqueTestTypes()

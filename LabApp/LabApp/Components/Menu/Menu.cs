@@ -1,7 +1,7 @@
 ﻿using LabApp.Entities;
 using LabApp.Repositories;
 
-namespace LabApp
+namespace LabApp.Components.Menu
 {
     public abstract class Menu<T> : IMenu<T> where T : class, IEntity
     {
@@ -14,12 +14,12 @@ namespace LabApp
 
         public void MenuActions()
         {
-                Console.WriteLine($"Choose what do you want to do with {typeof(T).Name}s:\n" +
-                $"1 - Read all {typeof(T).Name}s\n" +
-                $"2 - Add new {typeof(T).Name}\n" +
-                $"3 - Remove {typeof(T).Name}\n" +
-                $"4 - Filter data\n" +
-                $"B - Go back to previous menu."); 
+            Console.WriteLine($"Choose what do you want to do with {typeof(T).Name}s:\n" +
+            $"1 - Read all {typeof(T).Name}s\n" +
+            $"2 - Add new {typeof(T).Name}\n" +
+            $"3 - Remove {typeof(T).Name}\n" +
+            $"4 - Filter data\n" +
+            $"B - Go back to previous menu.");
         }
 
         protected void ReadAllItems()
@@ -39,7 +39,9 @@ namespace LabApp
         protected abstract void AddNewItem();
 
         protected abstract void RemoveItem();
-        
+
+        protected abstract void FilterMenu();
+
 
     }
 }
