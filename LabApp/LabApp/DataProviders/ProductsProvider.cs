@@ -17,14 +17,8 @@ namespace LabApp.DataProviders
             var firstProduct = products.FirstOrDefault(x => x.Container == container,
                 new Product { Id = -1});
             
-            if (firstProduct.Id == -1)
-            {
-                Console.WriteLine("Product not found.");
-            }
-            else
-            {
-                Console.WriteLine(firstProduct);
-            }
+            var message = firstProduct.Id == -1 ? "Product not found." : firstProduct.ToString();
+            Console.WriteLine(message);
         }
 
         public void GetFrozenProducts()

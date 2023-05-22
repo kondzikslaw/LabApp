@@ -9,54 +9,13 @@ namespace LabApp.Components.Menu
         private readonly IRepository<Client> _clientRepository;
 
         private readonly IClientsProvider _clientsProvider;
-        
+
         public ClientMenuSql(IRepository<Client> clientRepository, IClientsProvider clientsProvider) : base(clientRepository)
         {
             _clientRepository = clientRepository;
             _clientsProvider = clientsProvider;
         }
-        
-        public new void MenuActions()
-        {
-            while (true)
-            {
-                base.MenuActions();
-                var input = Console.ReadLine().ToUpper();
 
-                if (input == "1")
-                {
-                    try
-                    {
-                        ReadAllItems();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-                else if (input == "2")
-                {
-                    AddNewItem();
-                }
-                else if (input == "3")
-                {
-                    RemoveItem();
-                }
-                else if (input == "4")
-                {
-                    FilterMenu();
-                }
-                else if (input == "B")
-                {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Wrong input. Please try again.");
-                }
-            }
-        }
-        
         protected override void AddNewItem()
         {
             Console.WriteLine("Enter Client Name: ");
@@ -76,15 +35,10 @@ namespace LabApp.Components.Menu
 
         protected override void RemoveItem()
         {
-            ReadAllItems();
-            Console.WriteLine("Choose Id of Client you would like to remove: ");
-            var input = int.Parse(Console.ReadLine());
-            var client = _clientRepository.GetById(input);
-
-            _clientRepository.Remove(client);
+            base.RemoveItem();
             _clientRepository.Save();
         }
-        
+
         protected override void FilterMenu()
         {
             while (true)

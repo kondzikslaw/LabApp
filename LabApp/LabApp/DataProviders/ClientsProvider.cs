@@ -18,14 +18,8 @@ namespace LabApp.DataProviders
             var clientInCity = clients.FirstOrDefault(x => x.ClientAddressCity == city,
                 new Client { Id = -1});
 
-            if (clientInCity.Id == -1)
-            {
-                Console.WriteLine("Client Not Found.");
-            }
-            else
-            {
-                Console.WriteLine(clientInCity);
-            }
+            var message = clientInCity.Id == -1 ? "Client Not Found." : clientInCity.ToString();
+            Console.WriteLine(message);
         }
 
         public void GetUniqueCities()

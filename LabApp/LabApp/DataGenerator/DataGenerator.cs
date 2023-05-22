@@ -21,17 +21,7 @@ namespace LabApp.DataGenerator
                 foreach (var line in productFile)
                 {
                     Product product = JsonSerializer.Deserialize<Product>(line);
-                    products.Add(new Product
-                    {
-                        Id = product.Id,
-                        ProductName = product.ProductName,
-                        ProductType = product.ProductType,
-                        ArrivalTemperature = product.ArrivalTemperature,
-                        StorageTemperature = product.StorageTemperature,
-                        Container = product.Container,
-                        ArrivalDate = product.ArrivalDate,
-                        RegistrationDate = product.RegistrationDate
-                    });
+                    products.Add(product);
                 }
             }
 
@@ -48,13 +38,7 @@ namespace LabApp.DataGenerator
                 foreach (var line in testFile)
                 {
                     Test test = JsonSerializer.Deserialize<Test>(line);
-                    tests.Add(new Test
-                    {
-                        Id = test.Id,
-                        TestName = test.TestName,
-                        TestType = test.TestType,
-                        Price = test.Price
-                    });
+                    tests.Add(test);
                 }
             }
 
@@ -71,15 +55,7 @@ namespace LabApp.DataGenerator
                 foreach (var line in clientFile)
                 {
                     Client client = JsonSerializer.Deserialize<Client>(line);
-                    clients.Add(new Client
-                    {
-                        Id = client.Id,
-                        ClientName = client.ClientName,
-                        ClientAddressStreet = client.ClientAddressStreet,
-                        ClientAddressNumber = client.ClientAddressNumber,
-                        ClientAddressCity = client.ClientAddressCity,
-                        ClientAddressPostalCode = client.ClientAddressPostalCode
-                    });
+                    clients.Add(client);
                 }
             }
 

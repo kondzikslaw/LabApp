@@ -17,47 +17,6 @@ namespace LabApp.Components.Menu
             _clientsProvider = clientsProvider;
         }
 
-        public new void MenuActions()
-        {
-            while (true)
-            {
-                base.MenuActions();
-                var input = Console.ReadLine().ToUpper();
-
-                if (input == "1")
-                {
-                    try
-                    {
-                        ReadAllItems();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                    }
-                }
-                else if (input == "2")
-                {
-                    AddNewItem();
-                }
-                else if (input == "3")
-                {
-                    RemoveItem();
-                }
-                else if (input == "4")
-                {
-                    FilterMenu();
-                }
-                else if (input == "B")
-                {
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("Wrong input. Please try again.");
-                }
-            }
-        }
-
         protected override void AddNewItem()
         {
             Console.WriteLine("Enter Client Name: ");
@@ -72,33 +31,13 @@ namespace LabApp.Components.Menu
             var postalCode = Console.ReadLine();
 
             _clientRepository.Add(new Client { Id = GetLastId(), ClientName = name, ClientAddressStreet = street, ClientAddressNumber = number, ClientAddressCity = city, ClientAddressPostalCode = postalCode });
-            SaveClientsToJsonFile();
+            SaveToJsonFile();
         }
 
         protected override void RemoveItem()
         {
-            ReadAllItems();
-            Console.WriteLine("Choose Id of Client you would like to remove: ");
-            var input = int.Parse(Console.ReadLine());
-            var client = _clientRepository.GetById(input);
-
-            _clientRepository.Remove(client);
-            SaveClientsToJsonFile();
-        }
-
-        protected void SaveClientsToJsonFile()
-        {
-            var clients = _clientRepository.GetAll();
-            File.WriteAllText("clients.json", string.Empty);
-            foreach (var client in clients)
-            {
-                var json = JsonSerializer.Serialize(client);
-                using (var writer = File.AppendText("clients.json"))
-                {
-                    writer.WriteLine(json);
-                }
-            }
-            _clientRepository.Save();
+            base.RemoveItem();
+            SaveToJsonFile();
         }
 
         protected override void FilterMenu()
@@ -130,18 +69,6 @@ namespace LabApp.Components.Menu
                 {
                     Console.WriteLine("Wrong input. Please try again.");
                 }
-            }
-        }
-
-        private int GetLastId()
-        {
-            if (_clientRepository.GetAll().Count() == 0)
-            {
-                return 1;
-            }
-            else
-            {
-                return _clientRepository.GetAll().Last().Id + 1;
             }
         }
     }

@@ -1,6 +1,4 @@
-﻿using LabApp.Entities;
-
-namespace LabApp.Components.Menu
+﻿namespace LabApp.Components.Menu
 {
     public interface IMenu<T> where T : class
     {
