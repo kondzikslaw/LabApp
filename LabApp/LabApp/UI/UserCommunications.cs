@@ -1,5 +1,5 @@
-﻿using LabApp.Components.Menu;
-using LabApp.Entities;
+﻿using LabApp.ApplicationServices.Components.Menu;
+using LabApp.DataAccess.Data.Entities;
 
 namespace LabApp.UI
 {

@@ -1,10 +1,10 @@
-﻿using LabApp.Components.Menu;
-using LabApp.Data;
-using LabApp.DataGenerator;
-using LabApp.DataProviders;
-using LabApp.Entities;
-using LabApp.Events;
-using LabApp.Repositories;
+﻿using LabApp.ApplicationServices.Components.DataGenerator;
+using LabApp.ApplicationServices.Components.DataProviders;
+using LabApp.ApplicationServices.Components.Menu;
+using LabApp.ApplicationServices.Events;
+using LabApp.DataAccess.Data;
+using LabApp.DataAccess.Data.Entities;
+using LabApp.DataAccess.Data.Repositories;
 using LabApp.UI;
 using Microsoft.Extensions.DependencyInjection;
 

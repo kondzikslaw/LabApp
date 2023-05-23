@@ -1,5 +1,5 @@
-﻿using LabApp.DataGenerator;
-using LabApp.Events;
+﻿using LabApp.ApplicationServices.Components.DataGenerator;
+using LabApp.ApplicationServices.Events;
 
 namespace LabApp.UI
 {
